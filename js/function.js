@@ -3,10 +3,18 @@
 
   var $window = $(window);
 
-  // TODO: Set your EmailJS service and template IDs here
-  // Replace with your actual IDs from the EmailJS dashboard.
-  var EMAILJS_SERVICE_ID = "service_gmail_ep";
-  var EMAILJS_TEMPLATE_ID = "template_bnh9fu4";
+  // Helper to open user's email client using a mailto link
+  function sendEmailWithMailto(recipient, subject, body) {
+    var mailtoLink =
+      "mailto:" +
+      encodeURIComponent(recipient) +
+      "?subject=" +
+      encodeURIComponent(subject) +
+      "&body=" +
+      encodeURIComponent(body);
+
+    window.open(mailtoLink, "_blank");
+  }
 
   // Simple email validation helper
   function isValidEmail(email) {
@@ -30,8 +38,6 @@
       var $emailInput = $form.find('input[name="email"]');
       var name = $.trim($nameInput.val());
       var email = $.trim($emailInput.val());
-      var $button = $form.find(".new-btn");
-      var originalHtml = $button.html();
 
       // clear previous state
       $message.removeClass("error success show").text("");
@@ -52,38 +58,25 @@
         return;
       }
 
-      // show loading state
-      $button.prop("disabled", true).addClass("loading").html("Sending...");
+      // Build a simple email subject and body (plain text; mailto will encode)
+      var subject = "New Cygnara website notification request";
+      var body =
+        "A new visitor has requested to be notified when the site launches.\n\n" +
+        "Name: " +
+        name +
+        "\n" +
+        "Email: " +
+        email +
+        "\n\n" +
+        "You can reply directly to this email address.";
 
-      // Use EmailJS to send the notification email
-      emailjs
-        .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          name: name,
-          email: email,
-        })
-        .then(
-          function () {
-            $button
-              .prop("disabled", false)
-              .removeClass("loading")
-              .html(originalHtml);
-            $message
-              .addClass("success show")
-              .text("Thanks! We’ll notify you as soon as we launch.");
-            $form[0].reset();
-          },
-          function () {
-            $button
-              .prop("disabled", false)
-              .removeClass("loading")
-              .html(originalHtml);
-            $message
-              .addClass("error show")
-              .text(
-                "Sorry, something went wrong. Please try again in a moment."
-              );
-          }
-        );
+      // Open the user's email client with a pre-filled message
+      // TODO: replace with your preferred recipient address
+      sendEmailWithMailto("epsooraj4@gmail.com", subject, body);
+
+      $message
+        .addClass("success show")
+        .text("Your email client should open in a moment.");
     });
   });
 })(jQuery);
