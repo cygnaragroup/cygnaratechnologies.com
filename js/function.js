@@ -72,7 +72,7 @@
 
       // Open the user's email client with a pre-filled message
       // TODO: replace with your preferred recipient address
-      sendEmailWithMailto("epsooraj4@gmail.com", subject, body);
+      sendEmailWithMailto("info@cygnaratechnologies.com", subject, body);
 
       $message
         .addClass("success show")
