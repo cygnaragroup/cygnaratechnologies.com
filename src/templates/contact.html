@@ -64,6 +64,7 @@
 								<div class="col-12">
 									<input
 										type="text"
+										id="contactName"
 										class="form-control"
 										placeholder="Name"
 									/>
@@ -71,6 +72,7 @@
 								<div class="col-md-6">
 									<input
 										type="number"
+										id="contactPhone"
 										class="form-control"
 										placeholder="Phone Number"
 									/>
@@ -78,6 +80,7 @@
 								<div class="col-md-6">
 									<input
 										type="email"
+										id="contactEmail"
 										class="form-control"
 										placeholder="Email Address"
 									/>
@@ -85,12 +88,14 @@
 								<div class="col-12">
 									<textarea
 										class="form-control"
+										id="contactMessage"
 										placeholder="Message"
 									></textarea>
 								</div>
 								<div class="col-12">
 									<a
 										href="#"
+										id="sendQueryBtn"
 										class="btn btn-secondary fs-14 fw-medium text-light"
 									>
 										Send Query
@@ -105,6 +110,46 @@
 	</div>
 </div>
 <!-- Contact Form End -->
+
+<script>
+	(function () {
+		const sendButton = document.getElementById("sendQueryBtn");
+		if (!sendButton) return;
+
+		sendButton.addEventListener("click", function (event) {
+			event.preventDefault();
+
+			const name = (document.getElementById("contactName")?.value || "").trim();
+			const phone = (document.getElementById("contactPhone")?.value || "").trim();
+			const email = (document.getElementById("contactEmail")?.value || "").trim();
+			const message = (document.getElementById("contactMessage")?.value || "").trim();
+
+			const to = "info@cygnaratechnologies.com";
+			const subject =
+				"New query from " + (name !== "" ? name : "website visitor");
+
+			const bodyLines = [
+				"Name: " + name,
+				"Phone: " + phone,
+				"Email: " + email,
+				"",
+				"Message:",
+				message,
+			];
+
+			const body = bodyLines.join("\n");
+			const mailtoUrl =
+				"mailto:" +
+				to +
+				"?subject=" +
+				encodeURIComponent(subject) +
+				"&body=" +
+				encodeURIComponent(body);
+
+			window.location.href = mailtoUrl;
+		});
+	})();
+</script>
 
 <!-- Info  -->
 <!-- <div class="section-space-y">
